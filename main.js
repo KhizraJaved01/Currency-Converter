@@ -1,0 +1,39 @@
+import inquirer from "inquirer";
+const conversionRates = {
+    PKR: 1,
+    USD: 277.90,
+    EUR: 0.84,
+    TRY: 8.58,
+    KWD: 903.15,
+    AED: 75.66, // United Arab Emirates Dirham
+};
+async function currencyConverter() {
+    const { amount, fromCurrency, toCurrency } = await inquirer.prompt([
+        {
+            name: "amount",
+            type: "number",
+            message: "Enter the amount you want to convert:",
+        },
+        {
+            name: "fromCurrency",
+            type: "list",
+            message: "Select the currency you have:",
+            choices: Object.keys(conversionRates),
+        },
+        {
+            name: "toCurrency",
+            type: "list",
+            message: "Select the currency you want to convert to:",
+            choices: Object.keys(conversionRates),
+        }
+    ]);
+    let convertedAmount;
+    if (fromCurrency === 'PKR') {
+        convertedAmount = amount * conversionRates[toCurrency];
+    }
+    else {
+        convertedAmount = amount * (1 / conversionRates[fromCurrency]) * conversionRates[toCurrency];
+    }
+    console.log(`${amount} ${fromCurrency} is equal to ${convertedAmount.toFixed(2)} ${toCurrency}`);
+}
+currencyConverter();
